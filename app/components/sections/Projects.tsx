@@ -12,7 +12,7 @@ interface Project {
   tags: string[];
   ctaText: string;
   ctaLink: string;
-  content: () => JSX.Element;
+  content: () => React.JSX.Element;
 }
 
 export default function Projects() {
