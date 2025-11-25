@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Card from '../ui/Card';
 import Button from '../ui/Button';
+import { motion, useInView } from 'motion/react';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -11,6 +12,15 @@ export default function Contact() {
     subject: '',
     message: '',
   });
+
+  const sectionRef = useRef<HTMLElement>(null);
+  const titleRef = useRef<HTMLDivElement>(null);
+  const methodsRef = useRef<HTMLDivElement>(null);
+  const formRef = useRef<HTMLDivElement>(null);
+
+  const titleInView = useInView(titleRef, { once: true, amount: 0.5 });
+  const methodsInView = useInView(methodsRef, { once: true, amount: 0.3 });
+  const formInView = useInView(formRef, { once: true, amount: 0.3 });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -60,20 +70,38 @@ export default function Contact() {
   ];
 
   return (
-    <section id="contact" className="px-6 py-20">
+    <section id="contact" className="px-6 py-20" ref={sectionRef}>
       <div className="mx-auto max-w-6xl">
-        <div className="mb-12 text-center">
+        <motion.div
+          className="mb-12 text-center"
+          ref={titleRef}
+          initial={{ opacity: 0, y: 30 }}
+          animate={titleInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ duration: 0.6 }}
+        >
           <h2 className="text-4xl font-bold text-zinc-900 dark:text-zinc-50">Entrons en Contact</h2>
           <p className="mt-4 text-lg text-zinc-600 dark:text-zinc-400">
             Travaillons ensemble sur votre prochain projet
           </p>
-        </div>
+        </motion.div>
 
         <div className="grid gap-8 lg:grid-cols-3">
           {/* Contact Methods */}
-          <div className="space-y-6">
-            {contactMethods.map((method) => (
-              <Card key={method.title} hover>
+          <motion.div
+            className="space-y-6"
+            ref={methodsRef}
+            initial={{ opacity: 0, x: -50 }}
+            animate={methodsInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
+            transition={{ duration: 0.6 }}
+          >
+            {contactMethods.map((method, index) => (
+              <motion.div
+                key={method.title}
+                initial={{ opacity: 0, y: 20 }}
+                animate={methodsInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
+              >
+                <Card hover>
                 <a
                   href={method.link}
                   className="flex items-center gap-4"
@@ -91,10 +119,16 @@ export default function Contact() {
                   </div>
                 </a>
               </Card>
+              </motion.div>
             ))}
 
             {/* Social Links */}
-            <Card>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={methodsInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+              transition={{ duration: 0.4, delay: contactMethods.length * 0.1 }}
+            >
+              <Card>
               <div className="space-y-3">
                 <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">Suivez-moi</p>
                 <div className="flex gap-3">
@@ -121,10 +155,18 @@ export default function Contact() {
                 </div>
               </div>
             </Card>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* Contact Form */}
-          <Card className="lg:col-span-2">
+          <motion.div
+            ref={formRef}
+            initial={{ opacity: 0, x: 50 }}
+            animate={formInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
+            transition={{ duration: 0.6 }}
+            className="lg:col-span-2"
+          >
+            <Card>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid gap-6 sm:grid-cols-2">
                 <div>
@@ -196,6 +238,7 @@ export default function Contact() {
               </Button>
             </form>
           </Card>
+          </motion.div>
         </div>
       </div>
     </section>

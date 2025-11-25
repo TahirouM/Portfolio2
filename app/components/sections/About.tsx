@@ -1,6 +1,10 @@
+'use client';
+
 import Card from '../ui/Card';
 import { File, Search, Settings } from "lucide-react"
 import { OrbitingCircles } from "@/components/ui/orbiting-circles"
+import { motion, useInView } from 'motion/react';
+import { useRef } from 'react';
 import ClaudeLogo from "@/public/Svg/IA/Claude-logo.svg"
 import GithubLogo from "@/public/Svg/IA/Icone-GitHub-Copilot.svg"
 import GoogleAILogo from "@/public/Svg/IA/Icone-google-AI.svg"
@@ -36,23 +40,56 @@ import UnrealLogo from "@/public/Svg/Perso/Unreal Engine Icon.svg"
 import Features from "@/components/features-2"
 
 export default function About() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const titleRef = useRef<HTMLDivElement>(null);
+  const subtitleRef = useRef<HTMLDivElement>(null);
+  const para1Ref = useRef<HTMLDivElement>(null);
+  const para2Ref = useRef<HTMLDivElement>(null);
+  const para3Ref = useRef<HTMLDivElement>(null);
+  const quoteRef = useRef<HTMLDivElement>(null);
+
+  const titleInView = useInView(titleRef, { once: true, amount: 0.5 });
+  const subtitleInView = useInView(subtitleRef, { once: true, amount: 0.5 });
+  const para1InView = useInView(para1Ref, { once: true, amount: 0.3 });
+  const para2InView = useInView(para2Ref, { once: true, amount: 0.3 });
+  const para3InView = useInView(para3Ref, { once: true, amount: 0.3 });
+  const quoteInView = useInView(quoteRef, { once: true, amount: 0.5 });
+
   return (
-    <section id="about" className="px-6 py-20">
+    <section id="about" className="px-6 py-20" ref={sectionRef}>
       <div className="mx-auto max-w-6xl">
-        <div className="mb-12 text-center">
+        <motion.div
+          className="mb-12 text-center"
+          ref={titleRef}
+          initial={{ opacity: 0, y: 30 }}
+          animate={titleInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ duration: 0.6 }}
+        >
           <h2 className="text-4xl font-bold text-zinc-900 dark:text-zinc-50">À Propos de Moi</h2>
-        </div>
+        </motion.div>
 
         <div className="space-y-12">
           {/* Sous-titre principal */}
-          <div className="text-center max-w-3xl mx-auto">
+          <motion.div
+            className="text-center max-w-3xl mx-auto"
+            ref={subtitleRef}
+            initial={{ opacity: 0, y: 20 }}
+            animate={subtitleInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
             <h3 className="text-2xl font-semibold text-zinc-700 dark:text-zinc-300 leading-relaxed">
               Développeur Full-Stack et Cloud Engineer de 20 ans basé à Lyon, je suis constamment en quête de nouvelles technologies et d&apos;apprentissage.
             </h3>
-          </div>
+          </motion.div>
 
           {/* Paragraphe 1 - Texte à gauche, Image à droite */}
-          <div className="grid md:grid-cols-2 gap-16 md:gap-16 items-center">
+          <motion.div
+            className="grid md:grid-cols-2 gap-16 md:gap-16 items-center"
+            ref={para1Ref}
+            initial={{ opacity: 0, x: -50 }}
+            animate={para1InView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
+            transition={{ duration: 0.6 }}
+          >
             <Card>
               <h4 className="text-xl font-semibold text-zinc-700 dark:text-zinc-300 leading-relaxed">
                 Avant mes études
@@ -62,7 +99,7 @@ export default function About() {
               </p>
             </Card>
             <div className="rounded-lg aspect-video flex items-center justify-center relative">
-            <OrbitingCircles radius={100} reverse>
+            <OrbitingCircles radius={100} reverse speed={0.5}>
               <img src={Cinema4DLogo.src || Cinema4DLogo} alt="Cinema 4D Logo" className="w-6 h-6" />
               <img src={PhotoshopLogo.src || PhotoshopLogo} alt="Photoshop Logo" className="w-6 h-6" />
               <img src={IllustratorLogo.src || IllustratorLogo} alt="Illustrator Logo" className="w-6 h-6" />
@@ -70,10 +107,16 @@ export default function About() {
               <img src={UnrealLogo.src || UnrealLogo} alt="Unreal Engine Logo" className="w-6 h-6" />
             </OrbitingCircles>
             </div>
-          </div>
+          </motion.div>
 
           {/* Paragraphe 2 - Image à gauche, Texte à droite */}
-          <div className="grid md:grid-cols-2 gap-16 md:gap-16 items-center">
+          <motion.div
+            className="grid md:grid-cols-2 gap-16 md:gap-16 items-center"
+            ref={para2Ref}
+            initial={{ opacity: 0, x: 50 }}
+            animate={para2InView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
+            transition={{ duration: 0.6 }}
+          >
             <Card className="order-1 md:order-2">
               <h4 className="text-xl font-semibold text-zinc-700 dark:text-zinc-300 leading-relaxed">
                 Mon parcours
@@ -83,7 +126,7 @@ export default function About() {
               </p>
             </Card>
             <div className="aspect-video flex items-center justify-center order-2 md:order-1 relative">
-            <OrbitingCircles path={true}>
+            <OrbitingCircles path={true} speed={0.5}>
               <img src={ReactLogo.src || ReactLogo} alt="React Logo" className="w-6 h-6" />
               <img src={VueLogo.src || VueLogo} alt="Vue Logo" className="w-6 h-6" />
               <img src={AngularLogo.src || AngularLogo} alt="Angular Logo" className="w-6 h-6" />
@@ -93,7 +136,7 @@ export default function About() {
               <img src={JavaScriptLogo.src || JavaScriptLogo} alt="JavaScript Logo" className="w-6 h-6" />
               <img src={PythonLogo.src || PythonLogo} alt="Python Logo" className="w-6 h-6" />
             </OrbitingCircles>
-            <OrbitingCircles radius={100} reverse>
+            <OrbitingCircles radius={100} reverse speed={0.5}>
               <img src={DockerLogo.src || DockerLogo} alt="Docker Logo" className="w-6 h-6" />
               <img src={KubernetesLogo.src || KubernetesLogo} alt="Kubernetes Logo" className="w-6 h-6" />
               <img src={AwsLogo.src || AwsLogo} alt="AWS Logo" className="w-6 h-6" />
@@ -104,10 +147,16 @@ export default function About() {
               <img src={CppLogo.src || CppLogo} alt="C++ Logo" className="w-6 h-6" />
             </OrbitingCircles>
             </div>
-          </div>
+          </motion.div>
 
           {/* Paragraphe 3 - Texte à gauche, Image à droite */}
-          <div className="grid md:grid-cols-2 gap-16 md:gap-16 items-center">
+          <motion.div
+            className="grid md:grid-cols-2 gap-16 md:gap-16 items-center"
+            ref={para3Ref}
+            initial={{ opacity: 0, x: -50 }}
+            animate={para3InView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
+            transition={{ duration: 0.6 }}
+          >
             <Card>
               <h4 className="text-xl font-semibold text-zinc-700 dark:text-zinc-300 leading-relaxed">
                 Mon intérêt pour l&apos;IA
@@ -117,7 +166,7 @@ export default function About() {
               </p>
             </Card>
             <div className="aspect-video flex items-center justify-center relative">
-            <OrbitingCircles path={true}>
+            <OrbitingCircles path={true} speed={0.5}>
               <img src={ClaudeLogo.src || ClaudeLogo} alt="Claude Logo" className="w-6 h-6" />
               <img src={GithubLogo.src || GithubLogo} alt="Github Logo" className="w-6 h-6" />
               <img src={GoogleAILogo.src || GoogleAILogo} alt="Google AI Logo" className="w-6 h-6" />
@@ -125,7 +174,7 @@ export default function About() {
               <img src={MakeLogo.src || MakeLogo} alt="Make Logo" className="w-6 h-6" />
               
             </OrbitingCircles>
-            <OrbitingCircles radius={100} reverse>
+            <OrbitingCircles radius={100} reverse speed={0.5}>
               <img src={ManusLogo.src || ManusLogo} alt="Manus Logo" className="w-6 h-6" />
               <img src={MidjourneyLogo.src || MidjourneyLogo} alt="Midjourney Logo" className="w-6 h-6" />
               <img src={N8NLogo.src || N8NLogo} alt="N8N Logo" className="w-6 h-6" />
@@ -134,19 +183,26 @@ export default function About() {
               <img src={SoraLogo.src || SoraLogo} alt="Sora Logo" className="w-6 h-6" />
             </OrbitingCircles>
             </div>
-          </div>
+          </motion.div>
 
           {/* Citation finale */}
-          <Card className="pt-16">
-            <div className="py-4">
-              <p className="text-xl font-semibold text-zinc-900 dark:text-zinc-50 italic text-center">
-                &quot;Toucher à tout pour mieux innover&quot;
-              </p>
-              <p className="text-right text-sm text-zinc-600 dark:text-zinc-400 mt-2">
-                moi - 2024
-              </p>
-            </div>
-          </Card>
+          <motion.div
+            ref={quoteRef}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={quoteInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.6 }}
+          >
+            <Card className="pt-16">
+              <div className="py-4">
+                <p className="text-xl font-semibold text-zinc-900 dark:text-zinc-50 italic text-center">
+                  &quot;Toucher à tout pour mieux innover&quot;
+                </p>
+                <p className="text-right text-sm text-zinc-600 dark:text-zinc-400 mt-2">
+                  moi - 2024
+                </p>
+              </div>
+            </Card>
+          </motion.div>
 
           <Features />
 

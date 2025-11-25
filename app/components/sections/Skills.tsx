@@ -5,7 +5,7 @@ import Card from '../ui/Card';
 import { NumberTicker } from '@/components/ui/number-ticker';
 import { Tooltip } from '@/components/ui/tooltip-card';
 import React, { useEffect, useId, useRef, useState } from 'react';
-import { AnimatePresence, motion } from 'motion/react';
+import { AnimatePresence, motion, useInView } from 'motion/react';
 import { useOutsideClick } from '@/hooks/use-outside-click';
 import Image from 'next/image';
 
@@ -87,7 +87,12 @@ export default function Skills() {
 
   const [active, setActive] = useState<(typeof skillCategories)[number] | boolean | null>(null);
   const ref = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const statsRef = useRef<HTMLDivElement>(null);
   const id = useId();
+
+  const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
+  const statsInView = useInView(statsRef, { once: true, amount: 0.5 });
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -168,14 +173,19 @@ export default function Skills() {
   ];
 
   return (
-    <section id="skills" className="bg-zinc-50 px-6 py-20 dark:bg-zinc-950">
+    <section id="skills" className="bg-zinc-50 px-6 py-20 dark:bg-zinc-950" ref={sectionRef}>
       <div className="mx-auto max-w-6xl">
-        <div className="mb-12 text-center">
+        <motion.div
+          className="mb-12 text-center"
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ duration: 0.6 }}
+        >
           <h2 className="text-4xl font-bold text-zinc-900 dark:text-zinc-50">Compétences & Technologies</h2>
           <p className="mt-4 text-lg text-zinc-600 dark:text-zinc-400">
             Les outils et technologies que j&apos;utilise
           </p>
-        </div>
+        </motion.div>
 
         {/* Expandable Cards */}
         <>
@@ -282,13 +292,30 @@ export default function Skills() {
             ) : null}
           </AnimatePresence>
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 mb-12">
+          <motion.div
+            className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 mb-12"
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            variants={{
+              visible: {
+                transition: {
+                  staggerChildren: 0.1
+                }
+              }
+            }}
+          >
             {skillCategories.map((category) => (
               <motion.div
                 layoutId={`card-${category.title}-${id}`}
                 key={`card-${category.title}-${id}`}
                 onClick={() => setActive(category)}
                 className="p-6 flex flex-col items-start bg-white dark:bg-neutral-900 hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-xl cursor-pointer border border-zinc-200 dark:border-zinc-800 transition-colors"
+                variants={{
+                  hidden: { opacity: 0, y: 30 },
+                  visible: { opacity: 1, y: 0 }
+                }}
+                transition={{ duration: 0.5 }}
+                whileHover={{ scale: 1.05 }}
               >
                 <div className="flex items-center gap-3 w-full mb-3">
                   <motion.div
@@ -325,36 +352,72 @@ export default function Skills() {
                 </motion.button>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </>
 
         {/* Additional Stats */}
-        <div className="mt-12 grid gap-6 sm:grid-cols-3">
-          <Card>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-blue-600 dark:text-blue-400">
-                <NumberTicker value={3} className="text-blue-600 dark:text-blue-400" />+
+        <motion.div
+          className="mt-12 grid gap-6 sm:grid-cols-3"
+          ref={statsRef}
+          initial="hidden"
+          animate={statsInView ? "visible" : "hidden"}
+          variants={{
+            visible: {
+              transition: {
+                staggerChildren: 0.15
+              }
+            }
+          }}
+        >
+          <motion.div
+            variants={{
+              hidden: { opacity: 0, scale: 0.8 },
+              visible: { opacity: 1, scale: 1 }
+            }}
+            transition={{ duration: 0.5 }}
+          >
+            <Card>
+              <div className="text-center">
+                <div className="text-4xl font-bold text-blue-600 dark:text-blue-400">
+                  <NumberTicker value={3} className="text-blue-600 dark:text-blue-400" />+
+                </div>
+                <div className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">Années d&apos;Expérience</div>
               </div>
-              <div className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">Années d&apos;Expérience</div>
-            </div>
-          </Card>
-          <Card>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-purple-600 dark:text-purple-400">
-                <NumberTicker value={30} className="text-purple-600 dark:text-purple-400" />+
+            </Card>
+          </motion.div>
+          <motion.div
+            variants={{
+              hidden: { opacity: 0, scale: 0.8 },
+              visible: { opacity: 1, scale: 1 }
+            }}
+            transition={{ duration: 0.5 }}
+          >
+            <Card>
+              <div className="text-center">
+                <div className="text-4xl font-bold text-purple-600 dark:text-purple-400">
+                  <NumberTicker value={30} className="text-purple-600 dark:text-purple-400" />+
+                </div>
+                <div className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">Projets Académiques</div>
               </div>
-              <div className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">Projets Académiques</div>
-            </div>
-          </Card>
-          <Card>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-green-600 dark:text-green-400">
-                <NumberTicker value={10} className="text-green-600 dark:text-green-400" />+
+            </Card>
+          </motion.div>
+          <motion.div
+            variants={{
+              hidden: { opacity: 0, scale: 0.8 },
+              visible: { opacity: 1, scale: 1 }
+            }}
+            transition={{ duration: 0.5 }}
+          >
+            <Card>
+              <div className="text-center">
+                <div className="text-4xl font-bold text-green-600 dark:text-green-400">
+                  <NumberTicker value={10} className="text-green-600 dark:text-green-400" />+
+                </div>
+                <div className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">Technologies Maîtrisées</div>
               </div>
-              <div className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">Technologies Maîtrisées</div>
-            </div>
-          </Card>
-        </div>
+            </Card>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

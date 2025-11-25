@@ -1,8 +1,11 @@
+'use client';
+
 import Button from '../ui/Button';
 import Badge from '../ui/Badge';
 import { LightRays } from '@/components/ui/light-rays';
 import { DotPattern } from '@/components/ui/dot-pattern';
 import Image from 'next/image';
+import { motion } from 'motion/react';
 
 export default function Hero() {
   return (
@@ -10,8 +13,17 @@ export default function Hero() {
       <DotPattern className="opacity-30" />
       <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-col items-center justify-center gap-12 lg:flex-row lg:items-center lg:justify-center">
         {/* Photo */}
-        <div className="flex-shrink-0">
-          <div className="relative h-64 w-64 overflow-hidden rounded-full border-4 border-zinc-200 bg-gradient-to-br from-zinc-100 to-zinc-200 shadow-xl dark:border-zinc-800 dark:from-zinc-800 dark:to-zinc-900 lg:h-80 lg:w-80">
+        <motion.div
+          className="flex-shrink-0"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
+          <motion.div
+            className="relative h-64 w-64 overflow-hidden rounded-full border-4 border-zinc-200 bg-gradient-to-br from-zinc-100 to-zinc-200 shadow-xl dark:border-zinc-800 dark:from-zinc-800 dark:to-zinc-900 lg:h-80 lg:w-80"
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.3 }}
+          >
             <div className="absolute inset-0 flex items-center justify-center">
               <Image
                 src="/Tahirou2.png"
@@ -22,35 +34,66 @@ export default function Hero() {
                 priority
               />
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Content */}
         <div className="flex flex-col items-center gap-6 text-center">
-          <Badge variant="primary">Disponible pour travailler</Badge>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <Badge variant="primary">Disponible pour travailler</Badge>
+          </motion.div>
 
           <div className="space-y-4">
-            <h1 className="text-5xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 sm:text-6xl lg:text-7xl">
+            <motion.h1
+              className="text-5xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 sm:text-6xl lg:text-7xl"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
               <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 Tahirou Moreau
               </span>
-            </h1>
-            <p className="text-2xl font-medium text-zinc-700 dark:text-zinc-300">
+            </motion.h1>
+            <motion.p
+              className="text-2xl font-medium text-zinc-700 dark:text-zinc-300"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+            >
               Lead Developer Full-Stack & Cloud Engineer
-            </p>
-            <p className="max-w-2xl text-lg leading-8 text-zinc-600 dark:text-zinc-400">
+            </motion.p>
+            <motion.p
+              className="max-w-2xl text-lg leading-8 text-zinc-600 dark:text-zinc-400"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+            >
               Passionné par les nouvelles technologies, l&apos;IA et l&apos;innovation
-            </p>
-            <p className="flex items-center gap-2 text-base text-zinc-500 dark:text-zinc-500">
+            </motion.p>
+            <motion.p
+              className="flex items-center gap-2 text-base text-zinc-500 dark:text-zinc-500"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+            >
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
               Lyon, France | 20 ans
-            </p>
+            </motion.p>
           </div>
 
-          <div className="flex flex-wrap gap-4">
+          <motion.div
+            className="flex flex-wrap gap-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.7 }}
+          >
             <Button variant="primary" href="#contact">
               Me contacter
             </Button>
@@ -63,10 +106,15 @@ export default function Hero() {
             <Button variant="outline" href="#projects">
               Voir mes projets
             </Button>
-          </div>
+          </motion.div>
 
           {/* Social Links */}
-          <div className="flex gap-4">
+          <motion.div
+            className="flex gap-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.8 }}
+          >
             <a
               href="https://github.com"
               className="text-zinc-600 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
@@ -89,7 +137,7 @@ export default function Hero() {
                 <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
               </svg>
             </a>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

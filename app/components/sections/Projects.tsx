@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useId, useRef, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion, useInView } from "motion/react";
 import { useOutsideClick } from "@/hooks/use-outside-click";
 
 interface Project {
@@ -419,15 +419,27 @@ export default function Projects() {
     },
   ];
 
+  const sectionRef = useRef<HTMLElement>(null);
+  const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
+
   return (
-    <section id="projects" className="px-6 py-20">
+    <motion.section
+      id="projects"
+      className="px-6 py-20"
+      ref={sectionRef}
+    >
       <div className="mx-auto max-w-6xl">
-        <div className="mb-12 text-center">
+        <motion.div
+          className="mb-12 text-center"
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ duration: 0.6 }}
+        >
           <h2 className="text-4xl font-bold text-zinc-900 dark:text-zinc-50">Mes Projets</h2>
           <p className="mt-4 text-lg text-zinc-600 dark:text-zinc-400">
             Une sélection de mes projets académiques et personnels
           </p>
-        </div>
+        </motion.div>
 
         <AnimatePresence>
           {active && (
@@ -514,13 +526,32 @@ export default function Projects() {
         </AnimatePresence>
 
         <div className="max-w-7xl mx-auto w-full">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {["Web", "DevOps", "Low Level Graphic", "C Project"].map((category) => {
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-2 gap-8"
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            variants={{
+              visible: {
+                transition: {
+                  staggerChildren: 0.1
+                }
+              }
+            }}
+          >
+            {["Web", "DevOps", "Low Level Graphic", "C Project"].map((category, catIndex) => {
               const categoryProjects = projects.filter(p => p.category === category);
               if (categoryProjects.length === 0) return null;
 
               return (
-                <div key={category} className="mb-4">
+                <motion.div
+                  key={category}
+                  className="mb-4"
+                  variants={{
+                    hidden: { opacity: 0, y: 30 },
+                    visible: { opacity: 1, y: 0 }
+                  }}
+                  transition={{ duration: 0.5 }}
+                >
                   <h3 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50 mb-6 px-4">
                     {category}
                   </h3>
@@ -531,6 +562,8 @@ export default function Projects() {
                         key={`card-${project.title}-${id}`}
                         onClick={() => setActive(project)}
                         className="p-4 flex flex-col md:flex-row justify-between items-center hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-xl cursor-pointer mb-4"
+                        whileHover={{ scale: 1.02 }}
+                        transition={{ duration: 0.2 }}
                       >
                         <div className="flex gap-4 flex-col md:flex-row">
                           <motion.div layoutId={`image-${project.title}-${id}`}>
@@ -566,13 +599,13 @@ export default function Projects() {
                       </motion.div>
                     ))}
                   </ul>
-                </div>
+                </motion.div>
               );
             })}
-          </div>
+          </motion.div>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }
 
