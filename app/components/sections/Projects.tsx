@@ -42,6 +42,34 @@ export default function Projects() {
   const projects: Project[] = [
     // Web Projects
     {
+      title: "TCL Live",
+      description: "Transport Lyonnais en Temps Réel",
+      category: "Web",
+      src: "/Projects/tcl-live.png",
+      tags: ["Next.js", "React", "API TCL", "Cartographie", "Temps réel"],
+      ctaText: "Visiter le site",
+      ctaLink: "https://tcl-live.vercel.app/",
+      content: () => (
+        <div className="space-y-4">
+          <p>
+            Application web permettant de localiser en temps réel l'ensemble des véhicules du réseau de transport en commun lyonnais (TCL) :
+            bus, métros, tramways et funiculaires. Les positions sont mises à jour en direct sur une carte interactive.
+          </p>
+          <p>
+            Pour chaque arrêt du réseau, il est possible de consulter les prochains passages de toutes les lignes desservant la station,
+            avec les temps d'attente en direct. L'interface est conçue pour être rapide, intuitive et accessible depuis mobile.
+          </p>
+          <div className="flex flex-wrap gap-2 mt-4">
+            {["Next.js", "React", "API TCL", "Cartographie", "Temps réel"].map((tag) => (
+              <span key={tag} className="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-full text-xs">
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+      ),
+    },
+    {
       title: "AREA",
       description: "Action REAction Platform",
       category: "Web",

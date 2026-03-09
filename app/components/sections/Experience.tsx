@@ -1,3 +1,5 @@
+"use client";
+
 import { Timeline } from '@/components/ui/timeline';
 import Badge from '../ui/Badge';
 
@@ -98,7 +100,7 @@ export default function Experience() {
   const timelineData = experiences.map((exp) => ({
     id: exp.id,
     title: exp.period,
-    content: (
+    content: () => (
       <div className="space-y-4">
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1">
